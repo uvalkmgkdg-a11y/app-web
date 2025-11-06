@@ -1,1 +1,114 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>تسجيل حضور الجامعة بالباركود</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+  <script src="https://unpkg.com/html5-qrcode@2.3.10"></script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>نظام حضور الجامعة</h1>
+      <p>سجّل حضورك بالباركود... من غير وجع دماغ 😊</p>
+    </header>
 
+    <section id="login-section" class="card">
+      <h2>تسجيل الدخول</h2>
+      <form id="login-form">
+        <label for="login-username">اسم المستخدم</label>
+        <input id="login-username" type="text" required>
+
+        <label for="login-password">الرقم السري</label>
+        <input id="login-password" type="password" required>
+
+        <button type="submit">دخول</button>
+        <p class="hint">
+          للتجربة السريعة: طالب → <strong>student_sara / 123456</strong>  
+          دكتور → <strong>prof_ahmed / 123456</strong>
+        </p>
+        <div id="login-error" class="error hidden"></div>
+      </form>
+    </section>
+
+    <section id="student-dashboard" class="card hidden">
+      <div class="section-header">
+        <h2>لوحة الطالب</h2>
+        <button class="logout-btn">تسجيل خروج</button>
+      </div>
+      <p>أهلا يا <span id="student-name"></span> 👋</p>
+
+      <div class="block">
+        <h3>المواد المسجّل فيها</h3>
+        <ul id="student-courses" class="list"></ul>
+      </div>
+
+      <div class="block scanner-block">
+        <h3>امسح الباركود بالكاميرا</h3>
+        <div id="qr-reader"></div>
+        <div class="scanner-controls">
+          <button id="start-scan-btn">ابدأ الكاميرا</button>
+          <button id="stop-scan-btn" class="secondary hidden">قفّل الكاميرا</button>
+        </div>
+        <p class="small">ممكن تحتاج تسمح للمتصفح يشغل الكاميرا.</p>
+      </div>
+
+      <div class="block">
+        <h3>أو ادخل الكود يدويًا</h3>
+        <div class="input-group">
+          <input type="text" id="manual-session-code" placeholder="مثال: CS101-20231120-ABCD1">
+          <button id="manual-submit-btn">تسجيل حضور</button>
+        </div>
+      </div>
+
+      <div class="block">
+        <h3>تاريخ حضورك</h3>
+        <ul id="student-history" class="list"></ul>
+      </div>
+    </section>
+
+    <section id="prof-dashboard" class="card hidden">
+      <div class="section-header">
+        <h2>لوحة الدكتور</h2>
+        <button class="logout-btn">تسجيل خروج</button>
+      </div>
+      <p>أهلا يا دكتور <span id="prof-name"></span> 👋</p>
+
+      <div class="block">
+        <h3>اختار المادة</h3>
+        <select id="prof-course-select">
+          <option value="">— اختار —</option>
+        </select>
+      </div>
+
+      <div class="block">
+        <h3>إنشاء جلسة جديدة</h3>
+        <label for="session-date">تاريخ المحاضرة</label>
+        <input type="date" id="session-date">
+        <button id="create-session-btn">إنشاء الجلسة والباركود</button>
+        <div id="session-result" class="session-result hidden">
+          <p>كود الجلسة: <strong id="session-code-text"></strong></p>
+          <svg id="session-barcode"></svg>
+          <p class="small">اعرض الكود ده للطلبة علشان يمسحوه.</p>
+        </div>
+      </div>
+
+      <div class="block">
+        <h3>الجلسات السابقة</h3>
+        <ul id="sessions-list" class="list"></ul>
+      </div>
+
+      <div id="attendance-details" class="block hidden">
+        <h3>تفاصيل حضور الجلسة</h3>
+        <ul id="attendance-students" class="list"></ul>
+      </div>
+    </section>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
